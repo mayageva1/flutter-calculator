@@ -48,6 +48,21 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         } catch (e) {
           _controller.text = 'Error';
         }
+      } else if (value == 'x²') {
+        try {
+          final expression = Expression.parse(_expression);
+          final evaluator = const ExpressionEvaluator();
+          final result = evaluator.eval(expression, {});
+
+          if (result.isInfinite) {
+            _controller.text = 'Error: Division by zero';
+          } else {
+            _expression = '($result) * ($result)';
+            _controller.text = _expression;
+          }
+        } catch (e) {
+          _controller.text = 'Error';
+        }
       } else {
         _expression += value;
         _controller.text = _expression;
@@ -85,6 +100,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                 '4', '5', '6', '*',
                 '1', '2', '3', '-',
                 'C', '0', '=', '+',
+                'x²'
               ].map((value) {
                 return GridTile(
                   child: Padding(
